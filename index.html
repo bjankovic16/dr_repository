@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,18 +8,44 @@
 </head>
 <body>
 
-<form action="sendmail.php" method="post">
+<form id="contactForm">
     <label for="name">Name:</label>
-    <input type="text" name="name" required><br>
+    <input type="text" id="name" required><br>
 
     <label for="email">Email:</label>
-    <input type="email" name="email" required><br>
+    <input type="email" id="email" required><br>
 
     <label for="message">Message:</label>
-    <textarea name="message" rows="4" required></textarea><br>
+    <textarea id="message" rows="4" required></textarea><br>
 
     <input type="submit" value="Send">
 </form>
+
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+    emailjs.init("user_your_emailjs_user_id");  // Replace with your EmailJS User ID
+
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+
+        emailjs.send("service_your_emailjs_service_id", "template_your_emailjs_template_id", {
+            from_name: name,
+            from_email: email,
+            message: message,
+        })
+        .then(function (response) {
+            console.log('Email sent successfully:', response);
+            // Handle success, e.g., show a success message to the user
+        }, function (error) {
+            console.error('Email sending failed:', error);
+            // Handle error, e.g., show an error message to the user
+        });
+    });
+</script>
 
 </body>
 </html>
